@@ -1,0 +1,13 @@
+---
+# tasks file for openssh-server
+
+- name: load OS specific variables (see ../vars/*)
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: install openssh-server and openssh-client
+  action: "{{ ansible_pkg_mgr }} pkg={{ item }} state=latest"
+  with_items: sshd_packages
+
+- name: template sshd_config
+  template: src=sshd_config.j2 dest=/etc/ssh/sshd_config owner=root group=root mode=0600 backup=yes
+  notify: restart_sshd
