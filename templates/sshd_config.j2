@@ -1,9 +1,5 @@
-#	$OpenBSD: sshd_config,v 1.93 2014/01/10 05:59:19 djm Exp $
-
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
-
-# This sshd was compiled with PATH=/usr/local/bin:/usr/bin
 
 # The strategy used for options in the default sshd_config shipped with
 # OpenSSH is to specify options with their default value where
@@ -14,13 +10,13 @@
 # SELinux about this change.
 # semanage port -a -t ssh_port_t -p tcp #PORTNUMBER
 #
-#Port 22
+Port {{ sshd_config.Port|default('22') }}
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::
 
 # The default requires explicit activation of protocol 1
-#Protocol 2
+Protocol 2
 
 # HostKey for protocol version 1
 #HostKey /etc/ssh/ssh_host_key
@@ -44,18 +40,15 @@ SyslogFacility AUTHPRIV
 #LogLevel INFO
 
 # Authentication:
+LoginGraceTime 2m
+PermitRootLogin {{ sshd_config.PermitRootLogin|default('yes') }}
 
-#LoginGraceTime 2m
-{% if sshd_config.PermitRootLogin is defined %}
-PermitRootLogin {{ sshd_config.PermitRootLogin }}
-{% endif %}
-
-#StrictModes yes
+StrictModes yes
 #MaxAuthTries 6
 #MaxSessions 10
 
-#RSAAuthentication yes
-#PubkeyAuthentication yes
+RSAAuthentication yes
+PubkeyAuthentication yes
 
 # The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
 # but this is overridden so installations will only check .ssh/authorized_keys
@@ -74,21 +67,15 @@ AuthorizedKeysFile	.ssh/authorized_keys
 # RhostsRSAAuthentication and HostbasedAuthentication
 #IgnoreUserKnownHosts no
 # Don't read the user's ~/.rhosts and ~/.shosts files
-#IgnoreRhosts yes
+IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
-#PasswordAuthentication yes
 PermitEmptyPasswords no
-PasswordAuthentication yes
-{% if sshd_config.PasswordAuthentication is defined %}
-PasswordAuthentication {{ sshd_config.PasswordAuthentication }}
-{% endif %}
+PasswordAuthentication {{ sshd_config.PasswordAuthentication|default('yes') }}
 
 # Change to no to disable s/key passwords
-#ChallengeResponseAuthentication yes
-{% if sshd_config.ChallengeResponseAuthentication is defined %}
-ChallengeResponseAuthentication {{ sshd_config.ChallengeResponseAuthentication }}
-{% endif %}
+ChallengeResponseAuthentication {{
+sshd_config.ChallengeResponseAuthentication|default('no') }}
 
 # Kerberos options
 #KerberosAuthentication no
@@ -99,9 +86,7 @@ ChallengeResponseAuthentication {{ sshd_config.ChallengeResponseAuthentication }
 
 # GSSAPI options
 GSSAPIAuthentication yes
-{% if sshd_config.GSSAPICleanupCredentials is defined %}
-GSSAPICleanupCredentials {{ sshd_config.GSSAPICleanupCredentials }}
-{% endif %}
+GSSAPICleanupCredentials {{ sshd_config.GSSAPICleanupCredentials|default('no') }}
 #GSSAPIStrictAcceptorCheck yes
 #GSSAPIKeyExchange no
 #GSSAPIEnablek5users no
@@ -115,16 +100,12 @@ GSSAPICleanupCredentials {{ sshd_config.GSSAPICleanupCredentials }}
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-# WARNING: 'UsePAM no' is not supported in Fedora and may cause several
-# problems.
 UsePAM yes
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
 #GatewayPorts no
-{% if sshd_config.X11Forwarding is defined %}
-X11Forwarding {{ sshd_config.X11Forwarding }}
-{% endif %}
+X11Forwarding {{ sshd_config.X11Forwarding|default('yes') }}
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
@@ -135,12 +116,8 @@ X11Forwarding {{ sshd_config.X11Forwarding }}
 UsePrivilegeSeparation sandbox		# Default for new installations.
 #PermitUserEnvironment no
 #Compression delayed
-{% if sshd_config.ClientAliveInterval is defined %}
-ClientAliveInterval {{ sshd_config.ClientAliveInterval }}
-{% endif %}
-{% if sshd_config.ClientAliveCountMax is defined %}
-ClientAliveCountMax {{ sshd_config.ClientAliveCountMax }}
-{% endif %}
+ClientAliveInterval {{ sshd_config.ClientAliveInterval|default('0') }}
+ClientAliveCountMax {{ sshd_config.ClientAliveCountMax|default('3') }}
 #ShowPatchLevel no
 #UseDNS no
 #PidFile /var/run/sshd.pid
@@ -150,10 +127,7 @@ ClientAliveCountMax {{ sshd_config.ClientAliveCountMax }}
 #VersionAddendum none
 
 # no default banner path
-#Banner none
-{% if sshd_config.Banner is defined %}
-Banner {{ sshd_config.Banner }}
-{% endif %}
+Banner {{ sshd_config.Banner|default('none') }}
 
 # Accept locale-related environment variables
 AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES

@@ -1,5 +1,5 @@
-openssh
-=========
+ansible-openssh-servers
+=======================
 
 Ansible role to configure sshd on a remote host
 
@@ -14,7 +14,6 @@ Role Variables
 These are the defaults:
 
 ```yaml
-# these are the setting I could want to change, but I leave them as defaults.
 sshd_config:
   PermitRootLogin: yes
   ChallengeResponseAuthentication: no
@@ -25,6 +24,8 @@ sshd_config:
   PasswordAuthentication: yes
   Banner: 'none'
 ```
+
+Those are implemeted directly in the jinja template.
 
 Dependencies
 ------------
@@ -37,7 +38,7 @@ Example Playbook
 ```yaml
     - hosts: servers
       roles:
-         - { role: archf.openssh }
+         - { role: archf.openssh-server }
 ```
 
 License

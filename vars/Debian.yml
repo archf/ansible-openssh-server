@@ -1,6 +1,6 @@
 ---
 
-sshd_service: ssh
+sshd_service_name: ssh
 
 sshd_packages:
   - openssh-server

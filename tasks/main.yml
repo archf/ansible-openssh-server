@@ -9,5 +9,6 @@
   with_items: sshd_packages
 
 - name: template sshd_config
+  # template: src=sshd_config.j2 dest=/tmp/sshd_config owner=root group=root mode=0600 backup=yes
   template: src=sshd_config.j2 dest=/etc/ssh/sshd_config owner=root group=root mode=0600 backup=yes
   notify: restart_sshd

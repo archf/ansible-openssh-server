@@ -1,13 +1,3 @@
 ---
-# defaults file for openssh-server
-
-# these are the setting I could want to change, but I leave them as defaults.
-sshd_config:
-  PermitRootLogin: yes
-  ChallengeResponseAuthentication: no
-  GSSAPICleanupCredentials: no
-  X11Forwarding: yes
-  ClientAliveInterval: 0
-  ClientAliveCountMax: 3
-  PasswordAuthentication: yes
-  Banner: 'none'
+# defaults/main.yml file for openssh-server
+sshd_config: []
