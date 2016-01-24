@@ -11,21 +11,23 @@ None.
 Role Variables
 --------------
 
-These are the defaults:
+These are the values you can change and also the defaults:
 
 ```yaml
 sshd_config:
-  PermitRootLogin: yes
-  ChallengeResponseAuthentication: no
-  GSSAPICleanupCredentials: no
-  X11Forwarding: yes
+  Port: 22
+  PermitRootLogin: 'yes'
+  ChallengeResponseAuthentication: 'no'
+  GSSAPICleanupCredentials: 'no'
+  X11Forwarding: 'yes'
   ClientAliveInterval: 0
   ClientAliveCountMax: 3
-  PasswordAuthentication: yes
+  PasswordAuthentication: 'yes'
   Banner: 'none'
 ```
 
-Those are implemeted directly in the jinja template.
+To override, create a `sshd_config` with dictionary key/value pairs as show above.
+You do not need to list the keys you do not want to change.
 
 Dependencies
 ------------
@@ -44,7 +46,7 @@ Example Playbook
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------

@@ -10,7 +10,7 @@
 # SELinux about this change.
 # semanage port -a -t ssh_port_t -p tcp #PORTNUMBER
 #
-Port {{ sshd_config.Port|default('22') }}
+Port {{ sshd_config.Port|default(sshd_Port) }}
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::
@@ -41,7 +41,7 @@ SyslogFacility AUTHPRIV
 
 # Authentication:
 LoginGraceTime 2m
-PermitRootLogin {{ sshd_config.PermitRootLogin|default('yes') }}
+PermitRootLogin {{ sshd_config.PermitRootLogin|default(sshd_PermitRootLogin) }}
 
 StrictModes yes
 #MaxAuthTries 6
@@ -71,11 +71,11 @@ IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
 PermitEmptyPasswords no
-PasswordAuthentication {{ sshd_config.PasswordAuthentication|default('yes') }}
+PasswordAuthentication {{ sshd_config.PasswordAuthentication|default(sshd_PasswordAuthentication) }}
 
 # Change to no to disable s/key passwords
 ChallengeResponseAuthentication {{
-sshd_config.ChallengeResponseAuthentication|default('no') }}
+sshd_config.ChallengeResponseAuthentication|default(sshd_ChallengeResponseAuthentication) }}
 
 # Kerberos options
 #KerberosAuthentication no
@@ -86,7 +86,8 @@ sshd_config.ChallengeResponseAuthentication|default('no') }}
 
 # GSSAPI options
 GSSAPIAuthentication yes
-GSSAPICleanupCredentials {{ sshd_config.GSSAPICleanupCredentials|default('no') }}
+GSSAPICleanupCredentials {{
+sshd_config.GSSAPICleanupCredentials|default(sshd_GSSAPICleanupCredentials) }}
 #GSSAPIStrictAcceptorCheck yes
 #GSSAPIKeyExchange no
 #GSSAPIEnablek5users no
@@ -105,7 +106,7 @@ UsePAM yes
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
 #GatewayPorts no
-X11Forwarding {{ sshd_config.X11Forwarding|default('yes') }}
+X11Forwarding {{ sshd_config.X11Forwarding|default(sshd_X11Forwarding) }}
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
@@ -116,8 +117,8 @@ X11Forwarding {{ sshd_config.X11Forwarding|default('yes') }}
 UsePrivilegeSeparation sandbox		# Default for new installations.
 #PermitUserEnvironment no
 #Compression delayed
-ClientAliveInterval {{ sshd_config.ClientAliveInterval|default('0') }}
-ClientAliveCountMax {{ sshd_config.ClientAliveCountMax|default('3') }}
+ClientAliveInterval {{ sshd_config.ClientAliveInterval|default(sshd_ClientAliveInterval) }}
+ClientAliveCountMax {{ sshd_config.ClientAliveCountMax|default(sshd_ClientAliveCountMax) }}
 #ShowPatchLevel no
 #UseDNS no
 #PidFile /var/run/sshd.pid
@@ -127,7 +128,7 @@ ClientAliveCountMax {{ sshd_config.ClientAliveCountMax|default('3') }}
 #VersionAddendum none
 
 # no default banner path
-Banner {{ sshd_config.Banner|default('none') }}
+Banner {{ sshd_config.Banner|default(sshd_Banner) }}
 
 # Accept locale-related environment variables
 AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
