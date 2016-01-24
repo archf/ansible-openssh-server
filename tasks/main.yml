@@ -3,9 +3,11 @@
 
 - name: load OS specific variables
   include_vars: "{{ ansible_os_family }}.yml"
+  tags: sshd
 
 - name: install openssh-server and openssh-client
   package: name={{ sshd_packages }} state=latest
+  tags: sshd
 
 - name: template sshd_config
   template:
@@ -13,6 +15,7 @@
     dest: /etc/ssh/sshd_config
     owner: root
     group: root
-    mode: 0600
+    mode: 0644
     backup: yes
   notify: restart_sshd
+  tags: sshd
