@@ -17,5 +17,6 @@
     group: root
     mode: 0644
     backup: yes
+    validate: '/usr/sbin/sshd -t -f %s'
   notify: restart_sshd
   tags: sshd

@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Felix Archambault
-  description: Install and configure sshd on a target host.
+  description: A role to install and configure openssh-server on a target host.
   license: MIT
   min_ansible_version: 2.0
   platforms:
@@ -15,4 +15,5 @@ galaxy_info:
   galaxy_tags:
     - system
     - networking
+
 dependencies: []
