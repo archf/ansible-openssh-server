@@ -16,16 +16,6 @@ Minimum required ansible version is 2.0.
 Those variables from `vars/*.{yml,json}` are loaded dynamically during task
 runtime using the `include_vars` module.
 
-Variables loaded from `vars/Debian.yml`.
-
-```yaml
-sshd_service_name: ssh
-
-sshd_packages:
-  - openssh-server
-
-```
-
 Variables loaded from `vars/RedHat.yml`.
 
 ```yaml
@@ -33,6 +23,16 @@ sshd_service_name: sshd
 
 sshd_packages:
   - openssh
+
+```
+
+Variables loaded from `vars/Debian.yml`.
+
+```yaml
+sshd_service_name: ssh
+
+sshd_packages:
+  - openssh-server
 
 ```
 
