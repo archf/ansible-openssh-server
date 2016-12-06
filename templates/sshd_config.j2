@@ -1,7 +1,8 @@
-# This is the sshd server system-wide configuration file.  See
-# sshd_config(5) for more information.
+{% set sshd_version = sshd_version.stderr|replace('OpenSSH_','')|first|int %}
+# This is the sshd server system-wide configuration file.  See sshd_5) for more
+# information.
 
-# The strategy used for options in the default sshd_config shipped with
+# The strategy used for options in the default sshd_shipped with
 # OpenSSH is to specify options with their default value where
 # possible, but leave them commented.  Uncommented options override the
 # default value.
@@ -10,7 +11,7 @@
 # SELinux about this change.
 # semanage port -a -t ssh_port_t -p tcp #PORTNUMBER
 #
-Port {{ sshd_config.Port|default(sshd_Port) }}
+Port {{sshd_Port|default(sshd_defaults['Port'])}}
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::
@@ -41,7 +42,7 @@ SyslogFacility AUTHPRIV
 
 # Authentication:
 LoginGraceTime 2m
-PermitRootLogin {{ sshd_config.PermitRootLogin|default(sshd_PermitRootLogin) }}
+PermitRootLogin {{sshd_PermitRootLogin|default(sshd_defaults['PermitRootLogin'])}}
 
 StrictModes yes
 #MaxAuthTries 6
@@ -71,11 +72,10 @@ IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
 PermitEmptyPasswords no
-PasswordAuthentication {{ sshd_config.PasswordAuthentication|default(sshd_PasswordAuthentication) }}
+PasswordAuthentication {{sshd_PasswordAuthentication|default(sshd_defaults['PasswordAuthentication'])}}
 
 # Change to no to disable s/key passwords
-ChallengeResponseAuthentication {{
-sshd_config.ChallengeResponseAuthentication|default(sshd_ChallengeResponseAuthentication) }}
+ChallengeResponseAuthentication {{sshd_ChallengeResponseAuthentication|default(sshd_defaults['ChallengeResponseAuthentication'])}}
 
 # Kerberos options
 #KerberosAuthentication no
@@ -86,8 +86,7 @@ sshd_config.ChallengeResponseAuthentication|default(sshd_ChallengeResponseAuthen
 
 # GSSAPI options
 GSSAPIAuthentication yes
-GSSAPICleanupCredentials {{
-sshd_config.GSSAPICleanupCredentials|default(sshd_GSSAPICleanupCredentials) }}
+GSSAPICleanupCredentials {{sshd_GSSAPICleanupCredentials|default(sshd_defaults['GSSAPICleanupCredentials'])}}
 #GSSAPIStrictAcceptorCheck yes
 #GSSAPIKeyExchange no
 #GSSAPIEnablek5users no
@@ -106,7 +105,7 @@ UsePAM yes
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
 #GatewayPorts no
-X11Forwarding {{ sshd_config.X11Forwarding|default(sshd_X11Forwarding) }}
+X11Forwarding {{sshd_X11Forwarding|default(sshd_defaults['X11Forwarding'])}}
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
@@ -114,11 +113,14 @@ X11Forwarding {{ sshd_config.X11Forwarding|default(sshd_X11Forwarding) }}
 #PrintLastLog yes
 #TCPKeepAlive yes
 #UseLogin no
-UsePrivilegeSeparation sandbox		# Default for new installations.
+
+# Default is yes, if 'sandbox' then the pre-authentication unprivileged process is
+# subject to additional restrictions.
+UsePrivilegeSeparation {{'sandbox' if sshd_version > 5 else 'yes'}}
 #PermitUserEnvironment no
 #Compression delayed
-ClientAliveInterval {{ sshd_config.ClientAliveInterval|default(sshd_ClientAliveInterval) }}
-ClientAliveCountMax {{ sshd_config.ClientAliveCountMax|default(sshd_ClientAliveCountMax) }}
+ClientAliveInterval {{sshd_ClientAliveInterval|default(sshd_defaults['ClientAliveInterval'])}}
+ClientAliveCountMax {{sshd_ClientAliveCountMax|default(sshd_defaults['ClientAliveCountMax'])}}
 #ShowPatchLevel no
 #UseDNS no
 #PidFile /var/run/sshd.pid
@@ -128,7 +130,7 @@ ClientAliveCountMax {{ sshd_config.ClientAliveCountMax|default(sshd_ClientAliveC
 #VersionAddendum none
 
 # no default banner path
-Banner {{ sshd_config.Banner|default(sshd_Banner) }}
+Banner {{sshd_Banner|default(sshd_defaults['Banner'])}}
 
 # Accept locale-related environment variables
 AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
