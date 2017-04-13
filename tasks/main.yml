@@ -13,7 +13,8 @@
 - name: register ssh version
   command: ssh -V
   register: sshd_version
-  # check_mode: yes
+  check_mode: no
+  changed_when: False
 
 - name: template sshd_config
   template:
