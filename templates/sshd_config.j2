@@ -114,6 +114,11 @@ X11Forwarding {{sshd_X11Forwarding|default(sshd_defaults['X11Forwarding'])}}
 #TCPKeepAlive yes
 #UseLogin no
 
+# Remove an existing Unix-domain socket file for local or remote port
+# forwarding before creating a new one. Only only used for port forwarding to a
+# Unix-domain socket file. Available from OpenSSH 6.7.
+StreamLocalBindUnlink {{ 'yes' if sshd_version > 6 else 'no'}}
+
 # Default is yes, if 'sandbox' then the pre-authentication unprivileged process is
 # subject to additional restrictions.
 UsePrivilegeSeparation {{'sandbox' if sshd_version > 5 else 'yes'}}
