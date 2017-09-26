@@ -1,26 +1,3 @@
 ---
 github_account: archf
-# requirements:
-description: |
-
-  ### Usage
-
-  Supported settings are those below. The conventions is to prefix every
-  variable as per the `sshd` manual with same casing by `sshd_`.
-
-  ```yaml
-  sshd_Port: 22
-  sshd_PermitRootLogin: 'yes'
-  sshd_ChallengeResponseAuthentication: 'no'
-  sshd_GSSAPICleanupCredentials: 'no'
-  sshd_X11Forwarding: 'yes'
-  sshd_ClientAliveInterval: 0
-  sshd_ClientAliveCountMax: 3
-  sshd_PasswordAuthentication: 'yes'
-  sshd_Banner: 'none'
-  ```
-
 todos: []
-role_stack: |
-  This role was carefully selected to be part an ultimate deck of roles to manage
-  your infrastructure.
