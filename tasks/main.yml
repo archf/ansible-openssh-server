@@ -27,3 +27,5 @@
     validate: '/usr/sbin/sshd -t -f %s'
   notify: restart_sshd
   tags: sshd
+
+- meta: flush_handlers

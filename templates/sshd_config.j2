@@ -48,7 +48,6 @@ StrictModes yes
 #MaxAuthTries 6
 #MaxSessions 10
 
-RSAAuthentication yes
 PubkeyAuthentication yes
 
 # The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
@@ -144,7 +143,12 @@ AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
 AcceptEnv XMODIFIERS
 
 # override default of no subsystems
+{% if ansible_os_family == "Debian" %}
+Subsystem	sftp	/usr/lib/openssh/sftp-server
+{% else %}
+{# RedHat derivatives #}
 Subsystem	sftp	/usr/libexec/openssh/sftp-server
+{% endif %}
 
 # Example of overriding settings on a per-user basis
 #Match User anoncvs
