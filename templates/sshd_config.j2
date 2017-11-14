@@ -35,9 +35,17 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 #RekeyLimit default none
 
 # Logging
-# obsoletes QuietMode and FascistLogging
-#SyslogFacility AUTH
+# Facility code that is used when logging messages from ssh. Possible values
+# are DAEMON, USER, AUTH (default) and LOCAL[0-7]. AUTHPRIV (syslog
+# LOG_AUTHPRIV) seems available on Redhat and derivatives. Recommended for auth
+# logs that have a substantial risk of recording someone's password.
+{% if ansible_os_family == "Debian" %}
+SyslogFacility AUTH
+{% else %}
+{# RedHat derivatives #}
 SyslogFacility AUTHPRIV
+{% endif %}
+
 #LogLevel INFO
 
 # Authentication:
@@ -99,6 +107,8 @@ GSSAPICleanupCredentials {{sshd_GSSAPICleanupCredentials|default(sshd_defaults['
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
+# WARNING: 'UsePAM no' is not supported in Red Hat Enterprise Linux and may
+# cause several problems.
 UsePAM yes
 
 #AllowAgentForwarding yes
@@ -112,11 +122,6 @@ X11Forwarding {{sshd_X11Forwarding|default(sshd_defaults['X11Forwarding'])}}
 #PrintLastLog yes
 #TCPKeepAlive yes
 #UseLogin no
-
-# Remove an existing Unix-domain socket file for local or remote port
-# forwarding before creating a new one. Only only used for port forwarding to a
-# Unix-domain socket file. Available from OpenSSH 6.7.
-StreamLocalBindUnlink {{ 'yes' if sshd_version > 6 else 'no'}}
 
 # Default is yes, if 'sandbox' then the pre-authentication unprivileged process is
 # subject to additional restrictions.
@@ -141,6 +146,11 @@ AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
 AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
 AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
 AcceptEnv XMODIFIERS
+
+# Remove an existing Unix-domain socket file for local or remote port
+# forwarding before creating a new one. Only only used for port forwarding to a
+# Unix-domain socket file. Available from OpenSSH 6.7.
+StreamLocalBindUnlink {{ 'yes' if sshd_version > 6 else 'no'}}
 
 # override default of no subsystems
 {% if ansible_os_family == "Debian" %}
