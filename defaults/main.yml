@@ -7,11 +7,11 @@
 # in Ansible inventory variables: sshd_PasswordAuthentication: 'no'
 sshd_defaults:
   Port: 22
-  PermitRootLogin: 'yes'
+  PermitRootLogin: 'prohibit-password'
   ChallengeResponseAuthentication: 'no'
-  GSSAPICleanupCredentials: 'no'
   X11Forwarding: 'yes'
   ClientAliveInterval: 0
   ClientAliveCountMax: 3
   PasswordAuthentication: 'yes'
+  GatewayPorts: clientspecified
   Banner: 'none'
