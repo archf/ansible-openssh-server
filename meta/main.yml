@@ -3,7 +3,7 @@ galaxy_info:
   author: Felix Archambault
   description: A role to install and configure openssh-server on a target host.
   license: MIT
-  min_ansible_version: 2.0
+  min_ansible_version: 2.5
   platforms:
     - name: EL
       versions:
