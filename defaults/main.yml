@@ -13,5 +13,6 @@ sshd_defaults:
   ClientAliveInterval: 0
   ClientAliveCountMax: 3
   PasswordAuthentication: 'yes'
+  StreamLocalBindUnlink: 'yes'
   GatewayPorts: clientspecified
   Banner: 'none'
